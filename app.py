@@ -14,8 +14,12 @@ def home():
         interpret_id=response['interpret_id']
         response2=requests.get(result_url.format(interpret_id)).json()
         print(response2)
+        n=0
         while response2.get("state")!="SUCCESS":
             response2=requests.get(result_url.format(interpret_id)).json()
+            if n==4:
+                break
+            n=n+1
             print(response2)
         return jsonify(response2)
     return render_template("./index.html")
