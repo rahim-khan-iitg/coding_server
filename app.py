@@ -1,6 +1,7 @@
 from flask import Flask,render_template,jsonify,request,make_response
 from flask_cors import CORS
 import requests
+from src.connections import connect
 submission_url="https://leetcode.com/playground/api/runcode"
 result_url="https://www.leetcode.com/submissions/detail/{}/check/"
 app=Flask(__name__)
@@ -24,5 +25,10 @@ def home():
         return jsonify(response2)
     return render_template("./index.html")
 
+@app.route("/s")
+def index():
+    cur=connect()
+    cur.close()
+    return "hello"
 if __name__=="__main__":
     app.run()
