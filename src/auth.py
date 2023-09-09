@@ -20,7 +20,7 @@ class authorization:
                 hashed_password=result[0].encode("utf-8")
                 if(bcrypt.checkpw(password,hashed_password)):
                     conn.close()
-                    return {"result":1}
+                    return {"result":1,"name":"rahim","email":email}
                 else:
                     conn.close()
                     return {"result":0}

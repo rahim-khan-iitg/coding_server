@@ -1,7 +1,8 @@
-from flask import Flask,render_template,jsonify,request,make_response
+from flask import Flask,render_template,jsonify,request
 from flask_cors import CORS
 import requests
 from src.connections import connect
+from src.read.auth import authorization
 submission_url="https://leetcode.com/playground/api/runcode"
 result_url="https://www.leetcode.com/submissions/detail/{}/check/"
 app=Flask(__name__)
@@ -21,14 +22,20 @@ def home():
             if n==4:
                 break
             n=n+1
-            print(response2)
+            # print(response2)
         return jsonify(response2)
     return render_template("./index.html")
 
-@app.route("/s")
+@app.route("/s",methods=['GET','POST'])
 def index():
-    cur=connect()
-    cur.close()
+    if request.method=='POST':
+        content=request.get_json()
+        print(content)
+        email=content['data']['email']
+        password=content['data']['password']
+        auth=authorization()
+        response=auth.login(email,password)
+        return jsonify(response)
     return "hello"
 if __name__=="__main__":
     app.run()
